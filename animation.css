@@ -1,0 +1,73 @@
+/* All sizes use --u (one art pixel = --u screen pixels, set by content.js).
+   No background or frame: only the two characters and the computer desk are drawn. */
+.MOCHI-root {
+  all: initial;
+  display: block;
+  position: fixed;
+  bottom: 16px;
+  z-index: 2147483647;
+  pointer-events: none;
+  user-select: none;
+  image-rendering: pixelated;
+}
+.MOCHI-root * {
+  box-sizing: border-box;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+}
+/* Desk props, positioned relative to the programmer at x=36 (mirrored layout) (see animation.js CONFIG) */
+.MOCHI-chair-back { position: absolute; left: calc(var(--u) * 48); top: calc(var(--u) * 14); width: calc(var(--u) * 3); height: calc(var(--u) * 9); background: #8a5a32; }
+.MOCHI-chair-seat { position: absolute; left: calc(var(--u) * 38); top: calc(var(--u) * 23); width: calc(var(--u) * 13); height: calc(var(--u) * 2); background: #6b4425; }
+/* compact desk like the reference: short top, one leg, drawer unit under it */
+.MOCHI-desk { position: absolute; left: calc(var(--u) * 18); top: calc(var(--u) * 21); width: calc(var(--u) * 22); height: calc(var(--u) * 2); background: #c48a4c; box-shadow: inset 0 calc(var(--u) * -1) 0 #8a5a32; }
+.MOCHI-desk-leg { position: absolute; top: calc(var(--u) * 23); width: calc(var(--u) * 2); height: calc(var(--u) * 2); background: #6b4425; }
+/* leg at the left end */
+.MOCHI-desk-leg-a { left: calc(var(--u) * 18); }
+/* drawer unit */
+.MOCHI-drawer { position: absolute; left: calc(var(--u) * 22); top: calc(var(--u) * 23); width: calc(var(--u) * 9); height: calc(var(--u) * 2); background: #8a5a32; box-shadow: inset 0 calc(var(--u) * -1) 0 #6b4425; }
+.MOCHI-drawer::after { content: ''; position: absolute; left: calc(var(--u) * 4); top: 0; width: calc(var(--u) * 2); height: var(--u); background: #e8c68a; }
+.MOCHI-kbd { position: absolute; left: calc(var(--u) * 32); top: calc(var(--u) * 20); width: calc(var(--u) * 5); height: var(--u); background: #5a6ab8; }
+
+.MOCHI-sprite { position: absolute; display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+.MOCHI-monitor, .MOCHI-programmer { z-index: 2; }
+.MOCHI-listener { z-index: 3; }
+.MOCHI-flip { transform: scaleX(-1); }
+.MOCHI-bang { display: none; z-index: 4; }
+.MOCHI-bang.MOCHI-on { display: block; }
+.MOCHI-emo, .MOCHI-cloud { display: none; z-index: 6; }
+.MOCHI-cloud { z-index: 5; }
+.MOCHI-emo.MOCHI-on, .MOCHI-cloud.MOCHI-on { display: block; }
+
+/* hover hot-spots: the only parts of the scene that receive the mouse */
+.MOCHI-root .MOCHI-hit { position: absolute; z-index: 7; pointer-events: auto; cursor: pointer; }
+.MOCHI-zzz { display: none; z-index: 4; }
+.MOCHI-zzz.MOCHI-on { display: block; }
+
+.MOCHI-dust {
+  position: absolute;
+  z-index: 2;
+  width: calc(var(--u) * 2);
+  height: calc(var(--u) * 2);
+  background: #7b84c9;
+  animation: MOCHI-dust 350ms steps(3) forwards;
+}
+@keyframes MOCHI-dust {
+  from { opacity: 1; transform: translate(0, 0); }
+  to { opacity: 0; transform: translate(calc(var(--u) * -3), calc(var(--u) * -3)); }
+}
+
+/* flying bits: confetti, sparks, debris. --dx/--dy/--fall are art pixels, --ms is the duration */
+.MOCHI-pt {
+  position: absolute;
+  z-index: 5;
+  animation: MOCHI-fly var(--ms, 600ms) steps(10) forwards;
+}
+@keyframes MOCHI-fly {
+  0% { opacity: 1; transform: translate(0, 0); }
+  50% { opacity: 1; transform: translate(calc(var(--u) * var(--dx) * 0.75), calc(var(--u) * var(--dy))); }
+  100% { opacity: 0; transform: translate(calc(var(--u) * var(--dx)), calc(var(--u) * (var(--dy) + var(--fall)))); }
+}
+
+/* "Hide Mochi" (toolbar-icon menu): nothing of the scene is drawn or hoverable */
+.MOCHI-root.MOCHI-hidden { display: none !important; }
